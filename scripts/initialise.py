@@ -47,8 +47,7 @@ def get_parameters():
     return {
             'ltoa' : None,
             'restrictions_pct_reduction' : [0,2.2,9.1,13.3,31.3], # % (source: 10.1029/2018WR022865 table 1)
-            'target_river_abstraction_above_L1' : 5000, # Ml/d
-            'target_river_abstraction_below_L1' : 5000, # Ml/d
+            'target_river_abstraction' : 5000, # Ml/d
             'target_groundwater_abstraction' : 300, # Ml/d
             'available_groundwater_abstraction' : 500, # Ml/d
             'reservoir_capacity' : 194755, # Ml (source: 10.1029/2018WR022865 table 1)
@@ -71,7 +70,7 @@ def get_parameters():
             'rainwater_harvesting_storage_capacity' : 0, # Ml
             'rainwater_harvesting_penetration' : 0, # % households
             'roof_area' : 160, # km2
-            'percent_of_demand_satisfiable_by_rainfall' : 8, # % (WRMP management tables show ~4% of demand is for external use. Given that it rains more than is evaporated ~50% of days, we double this demand)
+            'percent_of_demand_satisfiable_by_rainfall' : 8, # % (WRMP management tables show ~4% of demand is for external use. Given that it rains more than is evaporated ~50% of days, we double this to get actual demand)
             'garden_area' : 350, # km2 (source?)
             'distribution_network_capacity' : 3000, # Ml/d
             'distribution_leakage' : 20, # %
