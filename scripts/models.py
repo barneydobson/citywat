@@ -248,13 +248,21 @@ def calculate_consumer_demand(state_variables, parameters):
     demand = baseline_demand*parameters['demand_profile'][state_variables['date'].month - 1]
     
     #If it's not raining, satisfy demand with rainfall
+    #Satisfy some demand with rainfall if possible
     rainfall_demand = demand * parameters['percent_of_demand_satisfiable_by_rainfall'] * constants.PCT_TO_PROP
-    if state_variables['precipitation'] < 1:
-        state_variables['supplied_by_harvested'] = min(state_variables['rainwater_harvesting_volume'],rainfall_demand)
+    precipitation_over_gardens = state_variables['precipitation'] * parameters['garden_area'] * constants.MM_KM2_TO_ML
+    
+    state_variables['supplied_by_rain'] = min(rainfall_demand, precipitation_over_gardens)
+    
+    #Supply remaining with rainfall harvesting
+    if state_variables['supplied_by_rain'] < rainfall_demand:
+        state_variables['supplied_by_harvested'] = min(state_variables['rainwater_harvesting_volume'], (rainfall_demand - state_variables['supplied_by_rain']) * parameters['rainwater_harvesting_penetration'] * constants.PCT_TO_PROP)
     else:
         state_variables['supplied_by_harvested'] = 0
         
-    demand -= state_variables['supplied_by_harvested']
+    
+        
+    demand -= (state_variables['supplied_by_harvested'] + state_variables['supplied_by_rain'])
     state_variables['rainwater_harvesting_volume'] -= state_variables['supplied_by_harvested']
     state_variables['consumer_demand'] = demand
 
@@ -316,7 +324,7 @@ def urban_runoff(state_variables, parameters):
     impermeable_precipitation = precipitation_over_london * parameters['runoff_coefficient'] * constants.PCT_TO_PROP
     
     #Update rainwater harvesting roofs
-    harvested_roof_precipitation = impermeable_precipitation * parameters['rainwater_harvesting_roof_area']
+    harvested_roof_precipitation = impermeable_precipitation * parameters['roof_area'] * parameters['rainwater_harvesting_penetration']  * constants.PCT_TO_PROP
     harvested_roof_spill = max(state_variables['rainwater_harvesting_volume'] - parameters['rainwater_harvesting_storage_capacity'] + harvested_roof_precipitation,0)
     harvested_roof_precipitation -= harvested_roof_spill
     state_variables['harvested_roof_spill'] = harvested_roof_spill
@@ -329,7 +337,7 @@ def urban_runoff(state_variables, parameters):
     impermeable_runoff = max(state_variables['impermeable_surface_storage_volume'] - parameters['impermeable_surface_storage_capacity'],0)    
     state_variables['impermeable_surface_storage_volume'] -= impermeable_runoff
     
-    state_variables['natural_stormwater_storage_volume'] += precipitation_over_london * (1 - parameters['runoff_coefficient'] * constants.PCT_TO_PROP)
+    state_variables['natural_stormwater_storage_volume'] += (precipitation_over_london * (1 - parameters['runoff_coefficient'] * constants.PCT_TO_PROP)) - state_variables['supplied_by_rain']
     
     #Update volume of natural storage and its dissipation, noting runoff
     state_variables['natural_stormwater_storage_volume'] = max(state_variables['natural_stormwater_storage_volume'] - parameters['natural_stormwater_storage_dissipation_rate'],0)
