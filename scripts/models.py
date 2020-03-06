@@ -261,7 +261,9 @@ def calculate_consumer_demand(state_variables, parameters):
     else:
         state_variables['supplied_by_harvested'] = 0
         
-    
+    if state_variables['precipitation'] > 5:
+        #Empty water butts in impending storm
+        state_variables['rainwater_harvesting_volume'] = 0
         
     demand -= (state_variables['supplied_by_harvested'] + state_variables['supplied_by_rain'])
     state_variables['rainwater_harvesting_volume'] -= state_variables['supplied_by_harvested']
