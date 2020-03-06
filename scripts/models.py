@@ -88,6 +88,10 @@ class model:
     def add_option(self,names):
         #Call the add_option function to implement options in the model
         options.add_option(self,names)
+        
+    def options_list(self):
+        #Call the add_option function to implement options in the model
+        return options.options_list()
     
     def run(self,fast = None):
         state_variables_timevarying = [] # state_variables is stored in this at the beginning of every timestep
@@ -168,11 +172,8 @@ def abstraction(state_variables, parameters):
                                     parameters['upstream_inflows']
     flow_above_mrf = max(flow_upstream_of_teddington - state_variables['river_minimum_flow'],0)
     
-    #Find target abstraction
-    if state_variables['restrictions'] == 0:
-        target_abstraction = parameters['target_river_abstraction_above_L1']
-    else:
-        target_abstraction = parameters['target_river_abstraction_below_L1']
+    #Target abstraction
+    target_abstraction = parameters['target_river_abstraction']
     
     #Don't overabstact more than the maximum beneficial abstraction
     target_abstraction = min(target_abstraction,parameters['reservoir_capacity'] - \
