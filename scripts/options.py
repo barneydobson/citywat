@@ -30,12 +30,13 @@ def add_option(model,names):
             greenspace_increase = area * assumed_runoff_reduction
             
             #Reduce percent impermeable accordingly
-            imperm_area = model.parameters['area'] * model.parameters['percent_impermeable'] * constants.PCT_TO_PROP            
+            imperm_area = model.parameters['area'] * model.parameters['percent_impermeable'] * constants.PCT_TO_PROP
             model.parameters['percent_impermeable'] = (imperm_area - greenspace_increase)/model.parameters['area'] * constants.PROP_TO_PCT
-        elif (name == 'green_roofs_storage'):    
-            area = 3
-            attenuation_capacity = 200
-            model.parameters['impermeable_surface_storage_capacity'] += (area * attenuation_capacity * constants.MM_KM2_TO_ML)
+#        elif (name == 'green_roofs_storage'):
+#            #I don't think this method makes sense - since it implies water can be stored not where it fell
+#            area = 3
+#            attenuation_capacity = 200
+#            model.parameters['impermeable_surface_storage_capacity'] += (area * attenuation_capacity * constants.MM_KM2_TO_ML)
         elif (name == 'water_butts'):
             model.parameters['rainwater_harvesting_penetration'] = 18 # % (of households and of roof area)
             model.parameters['rainwater_harvesting_storage_capacity'] = 240 # Ml (assuming a 400L water butt for 18% of London's households)
@@ -53,7 +54,7 @@ def options_list():
             'demand_reduction',
             'leakage',
             'green_roofs_equivalent',
-            'green_roofs_storage',
+#            'green_roofs_storage',
             'water_butts',
             'wwtw_rate',
             'wwtw_cap',
