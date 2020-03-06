@@ -31,7 +31,7 @@ def add_option(model,names):
             
             #Reduce percent impermeable accordingly
             imperm_area = model.parameters['area'] * model.parameters['percent_impermeable'] * constants.PCT_TO_PROP            
-            model.parameters['percent_impermeable'] = (imperm_area - greenspace_increase)/model.parameters['area']
+            model.parameters['percent_impermeable'] = (imperm_area - greenspace_increase)/model.parameters['area'] * constants.PROP_TO_PCT
         elif (name == 'green_roofs_storage'):    
             area = 3
             attenuation_capacity = 200
@@ -46,4 +46,15 @@ def add_option(model,names):
         elif (name == 'wwtw_storage'):
             model.parameters['wastewater_temporary_storage_capacity'] *= 1.1
 
-       
+def options_list():
+    return ['nopump_rule',
+            'supply_reservoir',
+            'effluent_reuse',
+            'demand_reduction',
+            'leakage',
+            'green_roofs_equivalent',
+            'green_roofs_storage',
+            'water_butts',
+            'wwtw_rate',
+            'wwtw_cap',
+            'wwtw_storage']
