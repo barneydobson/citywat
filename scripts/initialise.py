@@ -59,7 +59,7 @@ def get_parameters():
             'freshwater_treatment_minimum_capacity' : 1500, # Ml/d
             'freshwater_treatment_processing_losses' : 2, # %
             'number_of_households' : 3500000, # int
-            'per_household_consumption' : 364, # l/d
+            'per_household_consumption' : 360, # l/d
             'freshwater_treatment_max_rate_change' : 500, # Ml/d (for both increases and decreases)
             'non_household_consumption' : 375, # Ml/d
             'demand_profile' : [0.989,0.977,0.965,0.964,1.006,1.014,1.043,1.056,1.001,0.9746,0.9897,1.02], # %/100/month
@@ -84,7 +84,7 @@ def get_parameters():
             'wastewater_treatment_plant_maximum_capacity' : 6000, # Ml/d (no minimum capacity because I don't know how that would work, source: https://www.whatdotheyknow.com/request/capacity_of_londons_sewage_treat)
             'wastewater_treatment_max_rate_change' : 1000, # Ml/d (for increases only)
             'wastewater_treatment_plant_processing_losses' : 10, # %
-            'wastewater_temporary_storage_capacity' : 1000, # Ml
+            'wastewater_temporary_storage_capacity' : 2000, # Ml
             'treated_effluent_dissolved_oxygen' : 15, # mg/l
             'treated_effluent_nitrates' : 30, # mg/l
             'treated_effluent_phosphorus' : 2, # mg/l
