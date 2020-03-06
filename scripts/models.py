@@ -321,7 +321,7 @@ def calculate_household_output(state_variables, parameters):
 def urban_runoff(state_variables, parameters): 
     precipitation_over_london = state_variables['precipitation'] * parameters['area'] * constants.MM_KM2_TO_ML
     
-    impermeable_precipitation = precipitation_over_london * parameters['runoff_coefficient'] * constants.PCT_TO_PROP
+    impermeable_precipitation = precipitation_over_london * parameters['percent_impermeable'] * constants.PCT_TO_PROP
     
     #Update rainwater harvesting roofs
     harvested_roof_precipitation = impermeable_precipitation * parameters['roof_area'] * parameters['rainwater_harvesting_penetration']  * constants.PCT_TO_PROP
@@ -337,7 +337,7 @@ def urban_runoff(state_variables, parameters):
     impermeable_runoff = max(state_variables['impermeable_surface_storage_volume'] - parameters['impermeable_surface_storage_capacity'],0)    
     state_variables['impermeable_surface_storage_volume'] -= impermeable_runoff
     
-    state_variables['natural_stormwater_storage_volume'] += (precipitation_over_london * (1 - parameters['runoff_coefficient'] * constants.PCT_TO_PROP)) - state_variables['supplied_by_rain']
+    state_variables['natural_stormwater_storage_volume'] += (precipitation_over_london * (1 - parameters['percent_impermeable'] * constants.PCT_TO_PROP)) - state_variables['supplied_by_rain']
     
     #Update volume of natural storage and its dissipation, noting runoff
     state_variables['natural_stormwater_storage_volume'] = max(state_variables['natural_stormwater_storage_volume'] - parameters['natural_stormwater_storage_dissipation_rate'],0)
