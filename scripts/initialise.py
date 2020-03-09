@@ -74,7 +74,7 @@ def get_parameters():
             'garden_area' : 350, # km2 (source?)
             'distribution_network_capacity' : 3000, # Ml/d
             'distribution_leakage' : 20, # %
-            'household_percentage_non_returned' : 15, # %
+            'household_percentage_non_returned' : 10, # %
             'percent_impermeable' : 53, # % (mayor of London's office)
             'area' : 1000, # km2
             'sewerage_leakage' : 20, # %
