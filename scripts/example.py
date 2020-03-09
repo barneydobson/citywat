@@ -38,7 +38,7 @@ volumes.index.name = 'Date (day)'
 #Create and run the combined model
 normal_model = models.model(addresses)
 normal_model_results = normal_model.run(fast=True)
-volumes['citywat'] = normal_model_results.loc[volumes.index,['reservoir_volume','service_reservoir_volumes']].sum(axis=1)
+volumes['CityWat'] = normal_model_results.loc[volumes.index,['reservoir_volume','service_reservoir_volumes']].sum(axis=1)
 volumes.div(1000).plot()
 plt.ylabel('Supply Reservoir Volume (Gigalitre)')
 plt.savefig(os.path.join(output_address,"historic_volume.png"))
@@ -153,3 +153,4 @@ subset = options_results.loc[['reservoir_volume',
 
 f = misc.colorgrid_plot(-subset.copy())
 f.savefig(os.path.join(output_address, "colorgrid_results.png"))
+
