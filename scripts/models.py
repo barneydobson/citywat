@@ -261,9 +261,9 @@ def calculate_consumer_demand(state_variables, parameters):
     else:
         state_variables['supplied_by_harvested'] = 0
         
-    if state_variables['precipitation'] > 5:
-        #Empty water butts in impending storm
-        state_variables['rainwater_harvesting_volume'] = 0
+#    if state_variables['precipitation'] > 5:
+#        Empty water butts in impending storm
+#        state_variables['rainwater_harvesting_volume'] *= 0.7
         
     demand -= (state_variables['supplied_by_harvested'] + state_variables['supplied_by_rain'])
     state_variables['rainwater_harvesting_volume'] -= state_variables['supplied_by_harvested']
@@ -319,7 +319,7 @@ def distribution(state_variables, parameters):
     
 
 def calculate_household_output(state_variables, parameters): 
-    state_variables['household_output'] = state_variables['consumer_supplied']*(1-parameters['household_percentage_non_returned']*constants.PCT_TO_PROP)
+    state_variables['household_output'] = (state_variables['consumer_supplied'] - state_variables['supplied_by_rain'] - state_variables['supplied_by_harvested'])*(1-parameters['household_percentage_non_returned']*constants.PCT_TO_PROP)
 
 def urban_runoff(state_variables, parameters): 
     precipitation_over_london = state_variables['precipitation'] * parameters['area'] * constants.MM_KM2_TO_ML
@@ -327,7 +327,7 @@ def urban_runoff(state_variables, parameters):
     impermeable_precipitation = precipitation_over_london * parameters['percent_impermeable'] * constants.PCT_TO_PROP
     
     #Update rainwater harvesting roofs
-    harvested_roof_precipitation = impermeable_precipitation * parameters['roof_area'] * parameters['rainwater_harvesting_penetration']  * constants.PCT_TO_PROP
+    harvested_roof_precipitation = precipitation_over_london * parameters['roof_area']/parameters['area'] * parameters['rainwater_harvesting_penetration']  * constants.PCT_TO_PROP
     harvested_roof_spill = max(state_variables['rainwater_harvesting_volume'] - parameters['rainwater_harvesting_storage_capacity'] + harvested_roof_precipitation,0)
     harvested_roof_precipitation -= harvested_roof_spill
     state_variables['harvested_roof_spill'] = harvested_roof_spill
