@@ -320,7 +320,7 @@ def distribution(state_variables, parameters):
     
 
 def calculate_household_output(state_variables, parameters): 
-    state_variables['household_output'] = (state_variables['consumer_supplied'] - state_variables['supplied_by_rain'] - state_variables['supplied_by_harvested'])*(1-parameters['household_percentage_non_returned']*constants.PCT_TO_PROP)
+    state_variables['household_output'] = state_variables['consumer_supplied']*(1-parameters['household_percentage_non_returned']*constants.PCT_TO_PROP)
 
 def urban_runoff(state_variables, parameters): 
     precipitation_over_london = state_variables['precipitation'] * parameters['area'] * constants.MM_KM2_TO_ML
