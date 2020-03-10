@@ -6,7 +6,6 @@ Our aim was to perform mass balance calculations covering the entire urban water
 We wanted a software that is simple but highly customisable so that it can accomodate the unique operational situation that London's water finds itself in. We could not find an easy to use and open-source modelling software up to the task. 
 Thus, we created CityWat. 
 
-
 ## Philosophy
 CityWat enables a user to create a model object (defined in ``scripts\models.py``), which has a range of sub-models that can be added to it. 
 Each sub-model represents a different water cycle process (e.g. abstraction, distribution, etc.) at the city scale. 
@@ -25,6 +24,10 @@ When running in simulation mode, CityWat simply loops over all of the included s
 
 An example CityWat schematic.
 
+CityWat is not a GUI-based software and requires basic programming skills to use. 
+We made this choice because each city's water cycle is so unique that attempting to generalise all possible urban water cycles into a unified software was considered unfeasible.
+Indeed there are tens of existing GUI-based urban water cycle softwares available, yet we considered none suitable to model our problem without significant and complex modification.
+We decided it was far easier to make a simple but highly customisable software.
 
 ## Citation
 If you have any questions about using or running the code, or are wish to tailor it to a new case study, please contact b.dobson@imperial.ac.uk.
