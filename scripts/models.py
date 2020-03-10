@@ -294,7 +294,7 @@ def freshwater_treatment(state_variables, parameters):
     target_demand = max(target_demand,parameters['freshwater_treatment_minimum_capacity'])
     target_demand = min(target_demand,state_variables['freshwater_treatment_plant_demand'] + parameters['freshwater_treatment_max_rate_change'])
     target_demand = max(target_demand,state_variables['freshwater_treatment_plant_demand'] - parameters['freshwater_treatment_max_rate_change'])
-    state_variables['freshwater_treatment_plant_demand'] = target_demand + state_variables['freshwater_treatment_losses'] # should losses go here or before? 
+    state_variables['freshwater_treatment_plant_demand'] = target_demand/(1 - parameters['freshwater_treatment_processing_losses']*constants.PCT_TO_PROP)
 
 
 def distribution(state_variables, parameters):    
