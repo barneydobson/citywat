@@ -141,6 +141,7 @@ def get_state_variables():
             'treated_effluent_conc' : 0.334, # l/l
             'treated_effluent_to_abstraction_point' : 0, # Ml/d
             'treatment_output_to_service_reservoirs' : 1900, # Ml/d
+            'treatment_output_to_distribution' : 0, # Ml/d
             'untreated_effluent' : 10, # Ml/d
             'untreated_effluent_conc' : 0.003, # l/l
             'wastewater_temporary_storage_volume' : 200, # Ml
