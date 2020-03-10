@@ -12,7 +12,7 @@ CityWat enables a user to create a model object (defined in ``scripts\models.py`
 Each sub-model represents a different water cycle process (e.g. abstraction, distribution, etc.) at the city scale. 
 Information is shared via updating the model object's state variables, thus updating these state variables correctly ensures preservation of mass balance. 
 Model objects also have a range of parameters that are used in the various sub-models. 
-These parameters are currently set to represent the lumped values of London's urban water cycle (found in ``scripts\initialise.py``).
+These parameters are currently set to represent the lumped values for London's urban water cycle (found in ``scripts\initialise.py``).
 Implementation of options or interventions is simple to do in CityWat, provided that the options can be translated to a lumped city scale. 
 We provide a list of options at a London scale (found in ``scripts\options.py``).
 
