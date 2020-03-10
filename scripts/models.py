@@ -250,14 +250,14 @@ def calculate_consumer_demand(state_variables, parameters):
     
     #If it's not raining, satisfy demand with rainfall
     #Satisfy some demand with rainfall if possible
-    rainfall_demand = demand * parameters['percent_of_demand_satisfiable_by_rainfall'] * constants.PCT_TO_PROP
+    state_variables['outdoor_demand'] = demand * parameters['percent_of_demand_satisfiable_by_rainfall'] * constants.PCT_TO_PROP
     precipitation_over_gardens = state_variables['precipitation'] * parameters['garden_area'] * constants.MM_KM2_TO_ML
     
-    state_variables['supplied_by_rain'] = min(rainfall_demand, precipitation_over_gardens)
+    state_variables['supplied_by_rain'] = min(state_variables['outdoor_demand'], precipitation_over_gardens)
     
     #Supply remaining with rainfall harvesting
-    if state_variables['supplied_by_rain'] < rainfall_demand:
-        state_variables['supplied_by_harvested'] = min(state_variables['rainwater_harvesting_volume'], (rainfall_demand - state_variables['supplied_by_rain']) * parameters['rainwater_harvesting_penetration'] * constants.PCT_TO_PROP)
+    if state_variables['supplied_by_rain'] < state_variables['outdoor_demand']:
+        state_variables['supplied_by_harvested'] = min(state_variables['rainwater_harvesting_volume'], (state_variables['outdoor_demand'] - state_variables['supplied_by_rain']) * parameters['rainwater_harvesting_penetration'] * constants.PCT_TO_PROP)
     else:
         state_variables['supplied_by_harvested'] = 0
         
@@ -320,7 +320,10 @@ def distribution(state_variables, parameters):
     
 
 def calculate_household_output(state_variables, parameters): 
-    state_variables['household_output'] = state_variables['consumer_supplied']*(1-parameters['household_percentage_non_returned']*constants.PCT_TO_PROP)
+    treated_used_outdoors = state_variables['outdoor_demand'] - (state_variables['supplied_by_rain'] + state_variables['supplied_by_harvested'])
+    if (state_variables['supplied_by_rain'] + state_variables['supplied_by_harvested']) > state_variables['outdoor_demand']:
+        print('Outdoor supplied > outdoor demand at ' + state_variables['date'].strftime('%Y-%m-%d'))
+    state_variables['household_output'] = (state_variables['consumer_supplied'] - treated_used_outdoors)*(1-parameters['household_percentage_non_returned']*constants.PCT_TO_PROP)
 
 def urban_runoff(state_variables, parameters): 
     precipitation_over_london = state_variables['precipitation'] * parameters['area'] * constants.MM_KM2_TO_ML

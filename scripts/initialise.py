@@ -122,6 +122,7 @@ def get_state_variables():
             'natural_stormwater_overflow' : 0, #Ml/d
             'impermeable_surface_storage_volume' : 0, # Ml
             'nitrates' : 9, # mg/l
+            'outdoor_demand' : 0, # Ml/d
             'phosphorus' : 0.04, # mg/l
             'rainwater_harvesting_volume' : 0, #Ml
             'raw_river_conc' : 0.669, # l/l
