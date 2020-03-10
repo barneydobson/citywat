@@ -59,9 +59,9 @@ Download or clone this repository.
 ## Documentation
 This paper, its Supporting Material and the User Manual cover the following topics:
 
-- **Paper**: 
-- **Supporting Material (full)**: 
-- **User Manual**: 
+- **Paper**: XXX
+- **Supporting Material (full)**: XXX
+- **User Manual**: XXX
 
 ## License
 CityWat is licensed under the XXX
@@ -70,3 +70,4 @@ CityWat is licensed under the XXX
 - v1.0: dx.doi.org/
 
 ## Acknowledgements
+The development of CityWat was funded by NERC on the CAMELLIA project, grant number NE/S003495/1.
