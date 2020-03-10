@@ -34,7 +34,7 @@ Download or clone this repository.
 ### Try an example application
 - Open Python using your IDE of choice, starting 'Spyder' from Anaconda is recommended for those new to Python.
 - Navigate to and open 'example.py', found in the 'scripts' folder of this repository.
-- Run the script by pressing F5
+- Run the script by pressing F5.
 
 ## Documentation
 This paper, its Supporting Material and the User Manual cover the following topics:
