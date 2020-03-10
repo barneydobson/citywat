@@ -286,6 +286,7 @@ def freshwater_treatment(state_variables, parameters):
     treatment_output = treatment_input - state_variables['freshwater_treatment_losses']
     state_variables['treatment_output_to_service_reservoirs'] = min(parameters['service_reservoir_capacity'] - state_variables['service_reservoir_volumes'], treatment_output)
     state_variables['service_reservoir_volumes'] += state_variables['treatment_output_to_service_reservoirs']
+    state_variables['treatment_output_to_distribution'] = treatment_output - state_variables['treatment_output_to_service_reservoirs']
     
     #Update WTW demand
     target_demand = state_variables['distribution_demand'] + max(parameters['service_reservoir_capacity'] - state_variables['service_reservoir_volumes'],0)
@@ -298,7 +299,7 @@ def freshwater_treatment(state_variables, parameters):
 
 def distribution(state_variables, parameters):    
     #Take any extra needed water from service reservoirs
-    target_from_service_reservoirs = state_variables['distribution_demand']
+    target_from_service_reservoirs = state_variables['distribution_demand'] - state_variables['treatment_output_to_distribution']
     target_from_service_reservoirs = min(target_from_service_reservoirs,state_variables['service_reservoir_volumes'])
     state_variables['service_reservoir_volumes'] -= target_from_service_reservoirs
     
@@ -307,7 +308,7 @@ def distribution(state_variables, parameters):
     if state_variables['service_reservoir_volumes'] < 0:
         print('Service reservoir volumes < 0 at : ' + state_variables['date'].strftime('%Y-%m-%d'))
     
-    state_variables['distribution_input'] = target_from_service_reservoirs
+    state_variables['distribution_input'] = target_from_service_reservoirs + state_variables['treatment_output_to_distribution']
 
     #Split distribution input between leakage and households    
     state_variables['distribution_leakage'] = state_variables['distribution_input'] * parameters['distribution_leakage']*constants.PCT_TO_PROP
