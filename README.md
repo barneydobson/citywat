@@ -2,7 +2,7 @@
 A Modular Lumped Urban Water Cycle Model.
 
 The CAMELLIA project (https://www.imperial.ac.uk/environmental-and-water-resource-engineering/research/camellia/) required the creation of a water cycle model of London that covers supply, wastewater and river quality. 
-Our aim was to perform mass balance calculations covering the entire urban water cycle at a lumped citywide scale. 
+Our aim was to perform mass balance calculations and make operational decisions covering the entire urban water cycle at a lumped citywide scale. 
 We wanted a software that is simple but highly customisable so that it can accomodate the unique operational situation that London's water finds itself in. We could not find an easy to use and open-source modelling software up to the task. 
 Thus, we created CityWat. 
 
