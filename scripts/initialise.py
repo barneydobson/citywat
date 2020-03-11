@@ -37,7 +37,6 @@ def get_inputs(addresses):
     input_variables.columns = input_variables.columns.droplevel(1)
     input_variables = input_variables.dropna(axis=0,how='any')
     input_variables.flow *= constants.M3_S_TO_ML_D
-    input_variables.precipitation *= constants.MM_KM2_TO_ML
     input_variables.index = pd.to_datetime(input_variables.index)
     return input_variables
 
@@ -53,7 +52,6 @@ def get_parameters():
             'reservoir_capacity' : 194755, # Ml (source: 10.1029/2018WR022865 table 1)
             'service_reservoir_capacity' : 10000, # Ml
             'upstream_abstractions' : 500, # Ml/d
-            'upstream_inflows' : 0, # Ml/d
             'release_capacity' : 5000, # Ml/d
             'freshwater_treatment_maximum_capacity' : 3000, # Ml/d
             'freshwater_treatment_minimum_capacity' : 1500, # Ml/d
@@ -117,7 +115,10 @@ def get_state_variables():
             'freshwater_treatment_plant_demand' : 1940, # Ml/d
             'groundwater_to_freshwater_treatment' : 300, # Ml/d
             'harvested_roof_spill' : 0, #Ml/d
+            'household_consumed' : 0, #Ml/d
             'household_output' : 1300, # Ml/d
+            'impermeable_surface_storage_dissipation' : 0, # Ml/d
+            'natural_stormwater_storage_dissipation' : 0, # Ml/d
             'natural_stormwater_storage_volume' : 4000, # Ml
             'natural_stormwater_overflow' : 0, #Ml/d
             'impermeable_surface_storage_volume' : 0, # Ml
@@ -141,10 +142,12 @@ def get_state_variables():
             'treated_effluent' : 1950, # Ml/d
             'treated_effluent_conc' : 0.334, # l/l
             'treated_effluent_to_abstraction_point' : 0, # Ml/d
+            'treated_used_outdoors' : 0, #Ml/d
             'treatment_output_to_service_reservoirs' : 1900, # Ml/d
             'treatment_output_to_distribution' : 0, # Ml/d
             'untreated_effluent' : 10, # Ml/d
             'untreated_effluent_conc' : 0.003, # l/l
+            'upstream_abstractions' : 500, #Ml/d
             'wastewater_temporary_storage_volume' : 200, # Ml
             'wastewater_treatment_input' : 2070, # Ml/d
             'wastewater_treatment_losses' : 200, # Ml/d
