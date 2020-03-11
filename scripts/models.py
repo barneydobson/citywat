@@ -353,7 +353,7 @@ def distribution(state_variables, parameters):
 
 def calculate_household_output(state_variables, parameters): 
     state_variables['treated_used_outdoors'] = state_variables['outdoor_demand'] - (state_variables['supplied_by_rain'] + state_variables['supplied_by_harvested'])
-    if (state_variables['supplied_by_rain'] + state_variables['supplied_by_harvested']) > state_variables['outdoor_demand']:
+    if (state_variables['supplied_by_rain'] + state_variables['supplied_by_harvested'] + state_variables['treated_used_outdoors'] - state_variables['outdoor_demand']) > constants.FLOAT_ACCURACY:
         print('Outdoor supplied > outdoor demand at ' + state_variables['date'].strftime('%Y-%m-%d'))
     state_variables['household_consumed'] = (state_variables['consumer_supplied'] - state_variables['treated_used_outdoors'])*parameters['household_percentage_non_returned']*constants.PCT_TO_PROP
     state_variables['household_output'] = (state_variables['consumer_supplied'] - state_variables['treated_used_outdoors']) - state_variables['household_consumed']
