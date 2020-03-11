@@ -38,7 +38,7 @@ def add_option(model,names):
 #            attenuation_capacity = 200
 #            model.parameters['impermeable_surface_storage_capacity'] += (area * attenuation_capacity * constants.MM_KM2_TO_ML)
         elif (name == 'water_butts'):
-            model.parameters['rainwater_harvesting_penetration'] = 100 # % (of households and of roof area)
+            model.parameters['rainwater_harvesting_penetration'] = 100 # % (of external water demand and of roof area)
             model.parameters['rainwater_harvesting_storage_capacity'] = 280 # Ml (assuming a 400L water butt for 18% of London's households)
 #        elif (name == 'wwtw_rate'):
 #            model.parameters['wastewater_treatment_max_rate_change'] *= 1.1
