@@ -64,9 +64,6 @@ This paper, its Supporting Material and the User Manual cover the following topi
 - ``manual\supporting-material-sub-models.docx``: Sets out the equations used in the London implementation CityWat.
 - ``manual\supporting-material-variables-parameters.docx``: Lists the variables/parameters, their values and information sources for the London implementation of CityWat.
 
-## License
-CityWat is licensed under the XXX
-
 ## DOIs of previous releases
 - v1.0: dx.doi.org/
 
