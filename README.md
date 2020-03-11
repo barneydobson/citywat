@@ -30,7 +30,7 @@ Indeed there are tens of existing GUI-based urban water cycle softwares availabl
 We decided it was far easier to make a simple but highly customisable software.
 
 ## Citation
-If you have any questions about using or running the code, or are wish to tailor it to a new case study, please contact b.dobson[-at-]imperial.ac.uk.
+If you have any questions about using or running the code, or wish to tailor it to a new case study, please contact b.dobson[-at-]imperial.ac.uk.
 
 ## Getting Started
 These instructions will help you install a copy of CityWat and run our example case for London.
