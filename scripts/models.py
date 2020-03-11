@@ -33,7 +33,8 @@ class model:
         Define the set of functions each of which represents a different process in a timestep
         """
         self.model_list = initialise.get_models()
-    
+        self.init_model = self.copy()
+        
     def reset_states(self):
         #Resets state variables to initial ones
         self.state_variables = initialise.get_state_variables()        
@@ -93,7 +94,34 @@ class model:
         #Call the add_option function to implement options in the model
         return options.options_list()
     
-    def run(self,fast = None):
+    def check_mass_balance(self):
+        in_ = (self.state_variables['flow'] + \
+               self.state_variables['precipitation'] * self.parameters['area'] * constants.MM_KM2_TO_ML + \
+               self.state_variables['groundwater_to_freshwater_treatment'])
+        
+        out_ = (self.state_variables['upstream_abstractions'] + \
+                self.state_variables['freshwater_treatment_losses'] + \
+                self.state_variables['distribution_leakage'] + \
+                self.state_variables['household_consumed'] + \
+                self.state_variables['natural_stormwater_overflow'] + \
+                self.state_variables['stormwater_overflow'] + \
+                self.state_variables['sewerage_leakage'] + \
+                self.state_variables['untreated_effluent'] + \
+                self.state_variables['treated_effluent'] + \
+                self.state_variables['denaturalised_teddington_flow'] + \
+                self.state_variables['wastewater_treatment_losses'] + \
+                self.state_variables['natural_stormwater_storage_dissipation'] + \
+                self.state_variables['impermeable_surface_storage_dissipation'])
+        
+        ds_ = self.init_model.state_variables['reservoir_volume'] - self.state_variables['reservoir_volume'] + \
+                self.init_model.state_variables['natural_stormwater_storage_volume'] - self.state_variables['natural_stormwater_storage_volume'] + \
+                self.init_model.state_variables['impermeable_surface_storage_volume'] - self.state_variables['impermeable_surface_storage_volume'] + \
+                self.init_model.state_variables['rainwater_harvesting_volume'] - self.state_variables['rainwater_harvesting_volume'] + \
+                self.init_model.state_variables['service_reservoir_volumes'] - self.state_variables['service_reservoir_volumes'] + \
+                self.init_model.state_variables['wastewater_temporary_storage_volume'] - self.state_variables['wastewater_temporary_storage_volume']
+        if (in_ + ds_) - out_ > constants.FLOAT_ACCURACY:
+            print('mass balance error at : ' + self.state_variables['date'].strftime('%Y-%m-%d'))
+    def run(self,fast = None, debug = None):
         state_variables_timevarying = [] # state_variables is stored in this at the beginning of every timestep
         
         if fast is not True:
@@ -136,6 +164,10 @@ class model:
                 #Store state variables
                 state_variables_timevarying.append(self.state_variables.copy())
                 
+                #Check mass balance
+                if debug == True:
+                    self.check_mass_balance()
+                    self.init_model.state_variables = deepcopy(self.state_variables)
         #Return dataframe of results
         return pd.DataFrame(state_variables_timevarying).set_index('date')
 
@@ -166,10 +198,10 @@ def abstraction(state_variables, parameters):
     
     #Available flow for abstraction
     flow = state_variables['flow'] #Store in variable to improve performance
+    state_variables['upstream_abstractions'] = min(parameters['upstream_abstractions'],flow)
     flow_upstream_of_teddington = flow -\
-                                    parameters['upstream_abstractions'] +\
-                                    state_variables['treated_effluent_to_abstraction_point'] +\
-                                    parameters['upstream_inflows']
+                                    state_variables['upstream_abstractions'] +\
+                                    state_variables['treated_effluent_to_abstraction_point']
     flow_above_mrf = max(flow_upstream_of_teddington - state_variables['river_minimum_flow'],0)
     
     #Target abstraction
@@ -320,10 +352,11 @@ def distribution(state_variables, parameters):
     
 
 def calculate_household_output(state_variables, parameters): 
-    treated_used_outdoors = state_variables['outdoor_demand'] - (state_variables['supplied_by_rain'] + state_variables['supplied_by_harvested'])
+    state_variables['treated_used_outdoors'] = state_variables['outdoor_demand'] - (state_variables['supplied_by_rain'] + state_variables['supplied_by_harvested'])
     if (state_variables['supplied_by_rain'] + state_variables['supplied_by_harvested']) > state_variables['outdoor_demand']:
         print('Outdoor supplied > outdoor demand at ' + state_variables['date'].strftime('%Y-%m-%d'))
-    state_variables['household_output'] = (state_variables['consumer_supplied'] - treated_used_outdoors)*(1-parameters['household_percentage_non_returned']*constants.PCT_TO_PROP)
+    state_variables['household_consumed'] = (state_variables['consumer_supplied'] - state_variables['treated_used_outdoors'])*parameters['household_percentage_non_returned']*constants.PCT_TO_PROP
+    state_variables['household_output'] = (state_variables['consumer_supplied'] - state_variables['treated_used_outdoors']) - state_variables['household_consumed']
 
 def urban_runoff(state_variables, parameters): 
     precipitation_over_london = state_variables['precipitation'] * parameters['area'] * constants.MM_KM2_TO_ML
@@ -340,14 +373,17 @@ def urban_runoff(state_variables, parameters):
     
     #Update volume of impermeable storage and its dissipation, noting runoff
     state_variables['impermeable_surface_storage_volume'] += impermeable_precipitation
-    state_variables['impermeable_surface_storage_volume'] = max(state_variables['impermeable_surface_storage_volume'] - parameters['impermeable_surface_storage_dissipation_rate'],0)
+    state_variables['impermeable_surface_storage_dissipation'] = min(parameters['impermeable_surface_storage_dissipation_rate'], state_variables['impermeable_surface_storage_volume'])
+    state_variables['impermeable_surface_storage_volume'] -= state_variables['impermeable_surface_storage_dissipation']
     impermeable_runoff = max(state_variables['impermeable_surface_storage_volume'] - parameters['impermeable_surface_storage_capacity'],0)    
     state_variables['impermeable_surface_storage_volume'] -= impermeable_runoff
     
     state_variables['natural_stormwater_storage_volume'] += (precipitation_over_london * (1 - parameters['percent_impermeable'] * constants.PCT_TO_PROP))
     
     #Update volume of natural storage and its dissipation, noting runoff
-    state_variables['natural_stormwater_storage_volume'] = max(state_variables['natural_stormwater_storage_volume'] - parameters['natural_stormwater_storage_dissipation_rate'],0)
+    state_variables['natural_stormwater_storage_dissipation'] = min(parameters['natural_stormwater_storage_dissipation_rate'], state_variables['natural_stormwater_storage_volume'])
+    state_variables['natural_stormwater_storage_volume'] -= state_variables['natural_stormwater_storage_dissipation']
+    state_variables['natural_stormwater_storage_volume'] += (state_variables['treated_used_outdoors'] + state_variables['supplied_by_harvested'])
     natural_storage_overflow = max(state_variables['natural_stormwater_storage_volume'] - parameters['natural_stormwater_storage_capacity'],0)
     state_variables['natural_stormwater_storage_volume'] -= natural_storage_overflow
     
