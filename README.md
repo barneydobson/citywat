@@ -15,7 +15,7 @@ These parameters are currently set to represent the lumped values for London's u
 Implementation of options or interventions is simple to do in CityWat, provided that the options can be translated to a lumped city scale. 
 We provide a list of options at a London scale (found in ``scripts\options.py``).
 
-When running in simulation mode, CityWat simply loops over all of the included sub-models for each timestep - daily in its current timestep. This provides extremely fast run times (under 1 second for over 40,000 timesteps on a 3GHz PC). 
+When running in simulation mode, CityWat simply loops over all of the included sub-models for each timestep - daily in its current form. This provides extremely fast run times (under 1 second for over 40,000 timesteps on a 3GHz PC). 
 
 
 <p align="center">
