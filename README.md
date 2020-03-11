@@ -15,7 +15,7 @@ These parameters are currently set to represent the lumped values for London's u
 Implementation of options or interventions is simple to do in CityWat, provided that the options can be translated to a lumped city scale. 
 We provide a list of options at a London scale (found in ``scripts\options.py``).
 
-When running in simulation mode, CityWat simply loops over all of the included sub-models for each timestep - daily in its current timestep. This provides extremely fast run times (under 1 second for over 40,000 timesteps on a 3GHz PC). 
+When running in simulation mode, CityWat simply loops over all of the included sub-models for each timestep - daily in its current form. This provides extremely fast run times (under 1 second for over 40,000 timesteps on a 3GHz PC). 
 
 
 <p align="center">
@@ -30,9 +30,7 @@ Indeed there are tens of existing GUI-based urban water cycle softwares availabl
 We decided it was far easier to make a simple but highly customisable software.
 
 ## Citation
-If you have any questions about using or running the code, or are wish to tailor it to a new case study, please contact b.dobson@imperial.ac.uk.
-
-[![DOI](https://zenodo.org/badge/161804123.svg)]
+If you have any questions about using or running the code, or wish to tailor it to a new case study, please contact b.dobson[-at-]imperial.ac.uk.
 
 ## Getting Started
 These instructions will help you install a copy of CityWat and run our example case for London.
@@ -63,11 +61,8 @@ Download or clone this repository.
 This paper, its Supporting Material and the User Manual cover the following topics:
 
 - **Paper**: XXX
-- **Supporting Material (full)**: XXX
-- **User Manual**: XXX
-
-## License
-CityWat is licensed under the XXX
+- ``manual\supporting-material-sub-models.docx``: Sets out the equations used in the London implementation CityWat.
+- ``manual\supporting-material-variables-parameters.docx``: Lists the variables/parameters, their values and information sources for the London implementation of CityWat.
 
 ## DOIs of previous releases
 - v1.0: dx.doi.org/
