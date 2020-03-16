@@ -83,14 +83,8 @@ def get_parameters():
             'wastewater_treatment_max_rate_change' : 1000, # Ml/d (for increases only)
             'wastewater_treatment_plant_processing_losses' : 10, # %
             'wastewater_temporary_storage_capacity' : 2000, # Ml
-            'treated_effluent_dissolved_oxygen' : 15, # mg/l
-            'treated_effluent_nitrates' : 30, # mg/l
             'treated_effluent_phosphorus' : 2, # mg/l
-            'untreated_effluent_dissolved_oxygen' : 45, # mg/l
-            'untreated_effluent_nitrates' : 120, # mg/l
             'untreated_effluent_phosphorus' : 5, # mg/l
-            'upstream_dissolved_oxygen' : 5, # mg/l
-            'upstream_nitrates' : 10, # mg/l
             'upstream_phosphorus' : 0.2, # mg/l
             'nopump_precip' : 1000, # mm
             'nopump_flow' : 0, # Ml/d
@@ -107,7 +101,6 @@ def get_state_variables():
             'consumer_demand' : 1600, # Ml/d
             'consumer_supplied' : 1500, # Ml/d
             'denaturalised_teddington_flow' : 7000, # Ml/d (i.e. flow after abstraction)
-            'dissolved_oxygen' : 4.5, # mg/l
             'distribution_demand' : 1900, # Ml/d
             'distribution_input' : 1900, # Ml/d
             'distribution_leakage' : 380, # Ml/d
@@ -122,7 +115,6 @@ def get_state_variables():
             'natural_stormwater_storage_volume' : 4000, # Ml
             'natural_stormwater_overflow' : 0, #Ml/d
             'impermeable_surface_storage_volume' : 0, # Ml
-            'nitrates' : 9, # mg/l
             'outdoor_demand' : 0, # Ml/d
             'phosphorus' : 0.04, # mg/l
             'rainwater_harvesting_volume' : 0, #Ml
