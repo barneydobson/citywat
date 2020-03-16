@@ -448,26 +448,6 @@ def water_quality(state_variables, parameters):
     total_flow = state_variables['treated_effluent'] +\
                   state_variables['untreated_effluent'] +\
                   state_variables['denaturalised_teddington_flow']
-    
-    state_variables['treated_effluent_conc'] = state_variables['treated_effluent']/total_flow
-    state_variables['untreated_effluent_conc'] = state_variables['untreated_effluent']/total_flow
-    state_variables['raw_river_conc'] = state_variables['denaturalised_teddington_flow']/total_flow
-    
-    state_variables['dissolved_oxygen'] = (state_variables['treated_effluent'] *\
-                                           parameters['treated_effluent_dissolved_oxygen'] +\
-                                           state_variables['untreated_effluent'] *\
-                                           parameters['untreated_effluent_dissolved_oxygen'] +\
-                                           state_variables['denaturalised_teddington_flow'] *\
-                                           parameters['upstream_dissolved_oxygen']) /\
-                                           total_flow
-                                           
-    state_variables['nitrates'] = (state_variables['treated_effluent'] *\
-                                   parameters['treated_effluent_nitrates'] +\
-                                   state_variables['untreated_effluent'] *\
-                                   parameters['untreated_effluent_nitrates'] +\
-                                   state_variables['denaturalised_teddington_flow'] *\
-                                   parameters['upstream_nitrates']) /\
-                                   total_flow    
                                    
     state_variables['phosphorus'] = (state_variables['treated_effluent'] *\
                                      parameters['treated_effluent_phosphorus'] +\
