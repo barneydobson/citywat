@@ -50,11 +50,12 @@ If using Anaconda these can be installed by adding the channel 'conda-forge' (se
 CityWat has been tested using Python 2.7.15. ``from __future__ import division`` will need to be added to the top of each script if using Python 2.7.X.
 
 ### Install
-Download or clone this repository.
+- Download or clone this repository.
 
 ### Try an example application
 - Open Python using your IDE of choice, starting 'Spyder' from Anaconda is recommended for those new to Python.
 - Navigate to and open ``scripts\example.py``.
+- Update ``repo_address`` to the path that you installed this repository to.
 - Run the script by pressing F5.
 
 ## Documentation
