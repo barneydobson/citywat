@@ -1,14 +1,14 @@
 # CityWat
-A Modular Lumped Urban Water Cycle Model.
+A Modular Lumped Water Management Model.
 
-The CAMELLIA project (https://www.imperial.ac.uk/environmental-and-water-resource-engineering/research/camellia/) required the creation of a water cycle model of London that covers supply, wastewater and river quality. 
+The CAMELLIA project (https://www.imperial.ac.uk/environmental-and-water-resource-engineering/research/camellia/) required the creation of a water management model for London that covers supply, wastewater and river quality. 
 Our aim was to perform mass balance calculations and make operational decisions covering the entire urban water cycle at a lumped citywide scale. 
 We wanted a software that is simple but highly customisable so that it can accomodate the unique operational situation that London's water finds itself in. We could not find an easy to use and open-source modelling software up to the task. 
 Thus, we created CityWat. 
 
 ## Philosophy
 CityWat enables a user to create a model object (defined in ``scripts\models.py``), which has a range of sub-models that can be added to it. 
-Each sub-model represents a different water cycle process (e.g. abstraction, distribution, etc.) at the city scale. 
+Each sub-model represents a different water management process (e.g. abstraction, distribution, etc.) at the city scale. 
 Information is shared via updating the model object's state variables, thus updating these state variables correctly ensures preservation of mass balance. 
 Model objects also have a range of parameters that are used in the various sub-models. 
 These parameters are currently set to represent the lumped values for London's urban water cycle (found in ``scripts\initialise.py``).
@@ -25,7 +25,7 @@ When running in simulation mode, CityWat simply loops over all of the included s
 An example CityWat schematic.
 
 CityWat is not a GUI-based software and requires basic programming skills to use. 
-We made this choice because each city's water cycle is so unique that attempting to generalise all possible urban water cycles into a unified software was considered unfeasible.
+We made this choice because each city's water management is so unique that attempting to generalise all possible urban water cycles into a unified software was considered unfeasible.
 Indeed there are tens of existing GUI-based urban water cycle softwares available, yet we considered none suitable to model our problem without significant and complex modification.
 We decided it was far easier to make a simple but highly customisable software.
 
@@ -50,12 +50,13 @@ If using Anaconda these can be installed by adding the channel 'conda-forge' (se
 CityWat has been tested using Python 2.7.15. ``from __future__ import division`` will need to be added to the top of each script if using Python 2.7.X.
 
 ### Install
-Download or clone this repository.
+- Download or clone this repository.
 
 ### Try an example application
 - Open Python using your IDE of choice, starting 'Spyder' from Anaconda is recommended for those new to Python.
 - Navigate to and open ``scripts\example.py``.
-- Run the script by pressing F5.
+- Update ``repo_address`` to the path that you installed this repository to.
+- Run the script by pressing F5 or go through section by section highlighting code and running it with F9.
 
 ## Documentation
 This paper, its Supporting Material and the User Manual cover the following topics:
