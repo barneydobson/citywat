@@ -41,24 +41,24 @@ normal_model_results = normal_model.run(fast=True)
 volumes['CityWat'] = normal_model_results.loc[volumes.index,['reservoir_volume','service_reservoir_volumes']].sum(axis=1)
 volumes.div(1000).plot()
 plt.ylabel('Supply Reservoir Volume (Gigalitre)')
-plt.savefig(os.path.join(output_address,"historic_volume.png"))
+plt.savefig(os.path.join(output_address,"historic_volume.png"),dpi=600)
 
 #Plot untreated effluent against precipitation and reservoir volume
 ind = (normal_model_results.precipitation > 10) & (normal_model_results.reservoir_volume > 192807)
 
 f, ax = plt.subplots(2,1,figsize=(4.6,7))
 ax[0].scatter(normal_model_results.precipitation,normal_model_results.untreated_effluent_conc,facecolor='black',s=1.5,marker='.')
-ax[0].scatter(normal_model_results.loc[ind].precipitation,normal_model_results.loc[ind].untreated_effluent_conc,facecolor='red',s=1.5,marker='.')
-ax[0].set_xlabel('precipitation')
-ax[0].set_ylabel('untreated_effluent_conc')
-
+#ax[0].set_xlabel('precipitation')
+#ax[0].set_ylabel('untreated_effluent_conc')
 
 ax[1].scatter((normal_model_results.reservoir_volume + normal_model_results.service_reservoir_volumes)/1000,normal_model_results.untreated_effluent_conc,facecolor='black',s=1.5,marker='.')
-ax[1].scatter((normal_model_results.loc[ind].reservoir_volume + normal_model_results.loc[ind].service_reservoir_volumes)/1000,normal_model_results.loc[ind].untreated_effluent_conc,facecolor='red',s=1.5,marker='.')
-ax[1].set_xlabel('volume')
-ax[1].set_ylabel('untreated_effluent_conc')
+#ax[1].set_xlabel('volume')
+#ax[1].set_ylabel('untreated_effluent_conc')
 
-f.savefig(os.path.join(output_address,"precip_vol.png"))
+f.savefig(os.path.join(output_address,"precip_vol.png"),dpi=600)
+ax[0].scatter(normal_model_results.loc[ind].precipitation,normal_model_results.loc[ind].untreated_effluent_conc,facecolor='red',s=1.5,marker='.')
+ax[1].scatter((normal_model_results.loc[ind].reservoir_volume + normal_model_results.loc[ind].service_reservoir_volumes)/1000,normal_model_results.loc[ind].untreated_effluent_conc,facecolor='red',s=1.5,marker='.')
+f.savefig(os.path.join(output_address,"precip_vol_hilite.png"),dpi=600)
 
 #Get total spill
 subset = normal_model_results.untreated_effluent
@@ -103,7 +103,7 @@ col=['r','b','c']
 f = misc.water_quality_plots([normal_model_results,
                  supply_only_model_results,
                  wastewater_model_results],ind=volumes.index,color=col,lw=[0.3,1,0.3,0.3],ls = ['-','-',':'])
-f.savefig(os.path.join(output_address, "water_quality_framing.png"))
+f.savefig(os.path.join(output_address, "water_quality_framing.png"),dpi=600)
 
 #Abstraction effluent dilution
 aed_model = models.model(addresses)
@@ -111,8 +111,8 @@ aed_model.add_option(['nopump_rule'])
 aed_model_results = aed_model.run(fast=True)
 
 f = misc.aed_plots([normal_model_results,
-                 aed_model_results],ind=volumes.index,color=['r','b'],lw=[0.3,1,1,1],ls = ['-','-'], plot_order= [0,0,1,1])
-f.savefig(os.path.join(output_address, "abstraction_effluent_dilution.png"))
+                 aed_model_results],ind=volumes.index,color=['r','b'],lw=[0.3,0.3,0.3,0.3],ls = ['-','-'], plot_order= [0,0,0,0])
+f.savefig(os.path.join(output_address, "abstraction_effluent_dilution.png"),dpi=600)
 
 mean_vol = aed_model_results['reservoir_volume'].mean() - normal_model_results['reservoir_volume'].mean()
 print('vol diff : ' + str(mean_vol))
@@ -125,7 +125,7 @@ for level in range(1,5):
 
 #Work out stormwater storage increase equivalent
 storm_model = models.model(addresses)
-storm_model.parameters['wastewater_temporary_storage_capacity'] *= 1.06
+storm_model.parameters['wastewater_temporary_storage_capacity'] *= 1.3
 storm_model_results = storm_model.run(fast = True)
 storm_mean = storm_model_results.untreated_effluent_conc.mean()
 
@@ -152,5 +152,5 @@ subset = options_results.loc[['reservoir_volume',
                                 'phosphorus']]
 
 f = misc.colorgrid_plot(-subset.copy())
-f.savefig(os.path.join(output_address, "colorgrid_results.png"))
+f.savefig(os.path.join(output_address, "colorgrid_results.png"),dpi=600)
 
