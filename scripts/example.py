@@ -47,3 +47,16 @@ f, axs = plt.subplots(len(variables),1)
 for variable, ax in zip(variables,axs):
     ax.plot(normal_model_results[variable])
     ax.set_ylabel(variable)
+    
+#Try adding an option
+new_reservoir_model = models.model(addresses)
+new_reservoir_model.add_option('supply_reservoir')
+new_reservoir_results = new_reservoir_model.run(fast=True)
+
+#Plot some state variables
+variables = ['flow','reservoir_volume','restrictions','household_output','treated_effluent','untreated_effluent']
+f, axs = plt.subplots(len(variables),1)
+for variable, ax in zip(variables,axs):
+    ax.plot(normal_model_results[variable])
+    ax.plot(new_reservoir_results[variable])
+    ax.set_ylabel(variable)
