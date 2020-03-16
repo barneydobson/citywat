@@ -56,7 +56,7 @@ CityWat has been tested using Python 2.7.15. ``from __future__ import division``
 - Open Python using your IDE of choice, starting 'Spyder' from Anaconda is recommended for those new to Python.
 - Navigate to and open ``scripts\example.py``.
 - Update ``repo_address`` to the path that you installed this repository to.
-- Run the script by pressing F5.
+- Run the script by pressing F5 or go through section by section highlighting code and running it with F9.
 
 ## Documentation
 This paper, its Supporting Material and the User Manual cover the following topics:
