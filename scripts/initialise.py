@@ -24,20 +24,42 @@ def get_inputs(addresses):
     #Load and intersect flow data
     flowt = pd.read_csv(addresses['flow_address_teddington'],sep=',').set_index('date')
     flowl = pd.read_csv(addresses['flow_address_lee'],sep=',').set_index('date')
+    flowt.index = pd.to_datetime(flowt.index)
+    flowl.index = pd.to_datetime(flowl.index)
     ind = flowt.index.intersection(flowl.index)
+    
+    qual = pd.read_csv(addresses['phos_address'],sep=',').set_index('date')['result']
+    qual = qual.rename(columns={'result' : 'upstream_phosphorus'})
+    qual.index = pd.to_datetime(pd.to_datetime(qual.index).date)
+    qual_ = pd.DataFrame(index=ind,columns=['upstream_phosphorus'],dtype='float64')
+    qual_.loc[qual.index,'upstream_phosphorus'] = qual
+    qual_ = qual_.interpolate()
+    qual_ = qual_.fillna(qual_.mean())
+    
+    wwtw = pd.read_csv(addresses['wwtw_phos_address'],sep=',').set_index('date')['result']
+    wwtw = wwtw.rename(columns={'result' : 'treated_effluent_phosphorus'})
+    wwtw.index = pd.to_datetime(pd.to_datetime(wwtw.index).date)
+    wwtw_ = pd.DataFrame(index=pd.to_datetime(ind).date,columns=['treated_effluent_phosphorus'],dtype='float64')
+    wwtw_.loc[wwtw.index,'treated_effluent_phosphorus'] = wwtw
+    wwtw_ = wwtw_.interpolate()
+    wwtw_ = wwtw_.fillna(wwtw_.mean())
+    
+    precip = pd.read_csv(addresses['precip_address'],sep=',').set_index('date')
+    precip.index = pd.to_datetime(precip.index)
     
     #Combine in input variables    
     input_variables = {
                                 'flow' : flowt.loc[ind] + flowl.loc[ind].values, # naturalised flow at Teddington Weir (m3/s)
-                                'precipitation' :  pd.read_csv(addresses['precip_address'],sep=',').set_index('date') # Average precipitation across the Mogden WWRZ (mm)
+                                'precipitation' :  precip, # Average precipitation across the Beckton WWRZ, assumed to be representative (mm)
+                                'upstream_phosphorus' : qual_, # phosphorus samples at Teddington Weir (mg/l)
+                                'treated_effluent_phosphorus' : wwtw_ # average phosphorus samples taken over all London's WWTW's (mg/l)
                             }
     
     #join and convert input variables
     input_variables = pd.concat(input_variables,axis=1,sort=False)
     input_variables.columns = input_variables.columns.droplevel(1)
-    input_variables = input_variables.dropna(axis=0,how='any')
+    input_variables = input_variables.dropna(how='any')
     input_variables.flow *= constants.M3_S_TO_ML_D
-    input_variables.index = pd.to_datetime(input_variables.index)
     return input_variables
 
 def get_parameters():
@@ -79,13 +101,11 @@ def get_parameters():
             'sewerage_input_capacity' : 10000, # Ml/d (very dodgy estimate based on the sewer being designed for a 6mm/hr storm but would flood at 6.5mm/hr)
             'effluent_reuse_rate' : 15, # % (the % of effluent that can be reused)
             'effluent_reuse_capacity' : 0, # Ml/d
-            'wastewater_treatment_plant_maximum_capacity' : 6000, # Ml/d (no minimum capacity because I don't know how that would work, source: https://www.whatdotheyknow.com/request/capacity_of_londons_sewage_treat)
+            'wastewater_treatment_plant_maximum_capacity' : 8000, # Ml/d (no minimum capacity because I don't know how that would work, source: https://www.whatdotheyknow.com/request/capacity_of_londons_sewage_treat)
             'wastewater_treatment_max_rate_change' : 1000, # Ml/d (for increases only)
             'wastewater_treatment_plant_processing_losses' : 10, # %
             'wastewater_temporary_storage_capacity' : 2000, # Ml
-            'treated_effluent_phosphorus' : 2, # mg/l
-            'untreated_effluent_phosphorus' : 5, # mg/l
-            'upstream_phosphorus' : 0.2, # mg/l
+            'untreated_effluent_phosphorus' : 15, # mg/l
             'nopump_precip' : 1000, # mm
             'nopump_flow' : 0, # Ml/d
             'nopump_volume' : 0 # Ml/d
