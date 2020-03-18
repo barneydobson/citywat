@@ -28,7 +28,7 @@ class model:
         """
         self.input_variables = initialise.get_inputs(addresses)
         self.parameters['ltoa'] = initialise.get_ltoa(addresses)
-        
+   
         """Define timestep functions
         Define the set of functions each of which represents a different process in a timestep
         """
@@ -454,10 +454,10 @@ def water_quality(state_variables, parameters):
     state_variables['raw_river_conc'] = state_variables['denaturalised_teddington_flow']/total_flow
                            
     state_variables['phosphorus'] = (state_variables['treated_effluent'] *\
-                                     parameters['treated_effluent_phosphorus'] +\
+                                     state_variables['treated_effluent_phosphorus'] +\
                                      state_variables['untreated_effluent'] *\
                                      parameters['untreated_effluent_phosphorus'] +\
                                      state_variables['denaturalised_teddington_flow'] *\
-                                     parameters['upstream_phosphorus']) /\
+                                     state_variables['upstream_phosphorus']) /\
                                      total_flow                                       
 
