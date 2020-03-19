@@ -52,7 +52,7 @@ def get_inputs(addresses):
                                 'flow' : flowt.loc[ind] + flowl.loc[ind].values, # naturalised flow at Teddington Weir (m3/s)
                                 'precipitation' :  precip, # Average precipitation across the Beckton WWRZ, assumed to be representative (mm)
                                 'upstream_phosphorus' : qual_, # phosphorus samples at Teddington Weir (mg/l)
-                                'treated_effluent_phosphorus' : wwtw_ # average phosphorus samples taken over all London's WWTW's (mg/l)
+                                'treated_effluent_phosphorus' : wwtw_ # weighted average (weighted to WWTW size) phosphorus samples taken over all London's WWTW's (mg/l)
                             }
     
     #join and convert input variables
