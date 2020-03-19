@@ -400,7 +400,7 @@ def sewerage(state_variables, parameters):
     target_sewerage_input -= state_variables['stormwater_overflow']
     
     #Update sewerage leakage and output
-    state_variables['sewerage_leakage'] = target_sewerage_input * constants.PCT_TO_PROP
+    state_variables['sewerage_leakage'] = target_sewerage_input * parameters['sewerage_leakage'] * constants.PCT_TO_PROP
     state_variables['sewerage_output'] = target_sewerage_input - state_variables['sewerage_leakage']
     
 def cso(state_variables, parameters): 
@@ -413,7 +413,7 @@ def cso(state_variables, parameters):
                           parameters['wastewater_treatment_max_rate_change'],
                           parameters['wastewater_treatment_plant_maximum_capacity'])
                          
-    
+        
     #Excess stormwater goes untreated
     state_variables['untreated_effluent'] = max(state_variables['sewerage_output'] -\
                                                  wwtw_storage_excess_capacity -\
@@ -429,6 +429,7 @@ def cso(state_variables, parameters):
     state_variables['wastewater_temporary_storage_volume'] -= (state_variables['wastewater_treatment_input'] -\
                                                                wwtw_storage_and_plant_input)
     
+
 def wastewater_treatment(state_variables, parameters): 
     state_variables['wastewater_treatment_losses'] = state_variables['wastewater_treatment_input'] *\
                                                       parameters['wastewater_treatment_plant_processing_losses'] *\
