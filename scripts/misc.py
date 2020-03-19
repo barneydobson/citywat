@@ -34,10 +34,10 @@ def water_quality_plots(data,ind,color=None,lw=None,ls=None):
     return f
 
 def aed_plots(data,ind,color=None,lw=None,ls=None, plot_order = None):
-    data = [[df.phosphorus for df in data],
-                [df.untreated_effluent_conc for df in data],
-                [df.reservoir_volume for df in data],
-                [df.restrictions for df in data]]
+    data = [[df.reservoir_volume for df in data],
+                [df.restrictions for df in data],
+                [df.phosphorus for df in data],
+                [df.untreated_effluent_conc for df in data]]
     ncols = 2
     nrows = 4
     figsize = (8.3,6.7)
@@ -63,9 +63,7 @@ def aed_plots(data,ind,color=None,lw=None,ls=None, plot_order = None):
         else:
             axs[i,0].set_xticks([])        
             axs[i,1].set_xticks([])
-        if i == 2:
-            axs[i,0].set_yticklabels(axs[i,0].get_yticks()/1000)
-            axs[i,1].set_yticklabels(axs[i,1].get_yticks()/1000)
+
     return f
 
 def shiftedColorMap(cmap, start=0, midpoint=0.5, stop=1.0, name='shiftedcmap'):
