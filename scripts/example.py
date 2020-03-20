@@ -51,17 +51,26 @@ normal_model_results = normal_model.run(fast=True)
 volumes['CityWat'] = normal_model_results.loc[volumes.index,['reservoir_volume','service_reservoir_volumes']].sum(axis=1)
 volumes.div(1000).plot()
 plt.ylabel('Supply Reservoir Volume (Gigalitre)')
+nse = 1 - ((volumes['WARMS'].sub(volumes['CityWat']))**2).mean()/((volumes['WARMS'].sub(volumes['WARMS'].mean()))**2).mean()
+print(nse)
 
 #Compare phosphorus
 f, ax = plt.subplots()
 for idx, qual in quality.groupby('id'):
     ax.scatter(qual.result,normal_model_results.loc[qual.index,'phosphorus'])
-    print(idx + ' me='+str((abs(qual.result.div(normal_model_results.loc[qual.index,'phosphorus']))).median()))
+    ind = normal_model_results.loc[qual.index,'phosphorus'] > 5
+    cc = np.corrcoef(qual.result,normal_model_results.loc[qual.index,'phosphorus'])
+    print(idx + ' outliers :' + str(cc))
+    qual = qual.loc[~ind]
+    cc = np.corrcoef(qual.result,normal_model_results.loc[qual.index,'phosphorus'])
+    print(idx + ' outliers removed :' + str(cc))
+
 x = np.linspace(*ax.get_xlim())
 ax.plot(x, x,ls=':',color='k')
 ax.legend(['x=y','Sample Site 1','Sample Site 2'])
 ax.set_xlabel('Sampled Phosphorus (mg/l)')
 ax.set_ylabel('CityWat Modelled Phosphorus (mg/l)')
+
 
 #Plot some state variables
 variables = ['flow','reservoir_volume','restrictions','household_output','treated_effluent','untreated_effluent']
