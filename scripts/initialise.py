@@ -97,8 +97,8 @@ def get_parameters():
             'household_percentage_non_returned' : 10, # %
             'percent_impermeable' : 53, # % (mayor of London's office)
             'area' : 1000, # km2
-            'sewerage_leakage' : 20, # %
-            'sewerage_input_capacity' : 10000, # Ml/d (very dodgy estimate based on the sewer being designed for a 6mm/hr storm but would flood at 6.5mm/hr)
+            'sewerage_leakage' : 10, # %
+            'sewerage_input_capacity' : 15000, # Ml/d (very dodgy estimate based on the sewer being designed for a 6mm/hr storm but would flood at 6.5mm/hr)
             'effluent_reuse_rate' : 15, # % (the % of effluent that can be reused)
             'effluent_reuse_capacity' : 0, # Ml/d
             'wastewater_treatment_plant_maximum_capacity' : 8000, # Ml/d (no minimum capacity because I don't know how that would work, source: https://www.whatdotheyknow.com/request/capacity_of_londons_sewage_treat)
