@@ -58,15 +58,5 @@ CityWat has been tested using Python 2.7.15. ``from __future__ import division``
 - Update ``repo_address`` to the path that you installed this repository to.
 - Run the script by pressing F5 or go through section by section highlighting code and running it with F9.
 
-## Documentation
-This paper, its Supporting Material and the User Manual cover the following topics:
-
-- **Paper**: XXX
-- ``manual\supporting-material-sub-models.docx``: Sets out the equations used in the London implementation CityWat.
-- ``manual\supporting-material-variables-parameters.docx``: Lists the variables/parameters, their values and information sources for the London implementation of CityWat.
-
-## DOIs of previous releases
-- v1.0: dx.doi.org/
-
 ## Acknowledgements
 The development of CityWat was funded by NERC on the CAMELLIA project, grant number NE/S003495/1.
