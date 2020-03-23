@@ -32,6 +32,11 @@ We decided it was far easier to make a simple but highly customisable software.
 ## Citation
 If you have any questions about using or running the code, or wish to tailor it to a new case study, please contact b.dobson[-at-]imperial.ac.uk.
 
+Please cite: Barnaby Dobson and Ana Mijic, CityWat, London, 2020
+
+[![DOI](https://zenodo.org/badge/245396889.svg)](https://zenodo.org/badge/latestdoi/245396889)
+
+
 ## Getting Started
 These instructions will help you install a copy of CityWat and run our example case for London.
 
