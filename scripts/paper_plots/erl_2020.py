@@ -142,6 +142,23 @@ f = misc.water_quality_plots([normal_model_results,
                  wastewater_model_results],ind=volumes.index,color=col,lw=[0.3,1,0.3,0.3],ls = ['-','-',':'])
 f.savefig(os.path.join(output_address, "water_quality_framing.png"),dpi=900)
 
+
+f, ax = plt.subplots(2,2,figsize=(4.6*2,7))
+l=0
+for var in ['phosphorus','untreated_effluent_conc','reservoir_','restrictions']:
+   ax[int(l/2),l%2].scatter(normal_model_results[var],supply_only_model_results[var],facecolor='black',s=1.5,marker='.')
+   ax[int(l/2),l%2].scatter(normal_model_results[var],wastewater_model_results[var],facecolor='red',s=1.5,marker='.')
+   maxo = normal_model_results[var].max()
+   ax[int(l/2),l%2].plot([0,maxo],[0,maxo],ls=':')
+   l+=1
+   
+   
+ax[0].scatter(normal_model_results.precipitation,normal_model_results.untreated_effluent_conc,facecolor='black',s=1.5,marker='.')
+
+plt.scatter(normal_model_results.phosphorus,supply_only_model_results.phosphorus,'r')
+plt.scatter(normal_model_results.phosphorus,wastewater_model_results.phosphorus)
+
+
 #Abstraction effluent dilution
 aed_model = models.model(addresses)
 aed_model.add_option(['nopump_rule'])
@@ -152,6 +169,19 @@ normal_model_results['reservoir_volume'] = normal_model_results['reservoir_volum
 f = misc.aed_plots([normal_model_results,
                  aed_model_results],ind=volumes.index,color=['r','b'],lw=[0.3,0.3,0.3,0.3],ls = ['-','-'], plot_order= [1,1,0,0])
 f.savefig(os.path.join(output_address, "abstraction_effluent_dilution.png"),dpi=900)
+
+f, ax = plt.subplots(2,1,figsize=(4.6,7))
+l=0
+for var in ['phosphorus','reservoir_volume']:
+   ax[l].scatter(normal_model_results[var],aed_model_results[var],facecolor='black',s=1.5,marker='.')
+   maxo = normal_model_results[var].max()
+   ax[l].plot([0,maxo],[0,maxo],ls='--',color='r')
+   ax[l].set_aspect('equal', 'box')
+   ax[l].set_xlabel(var)
+#   ax[l].set_ylim(ax[l].get_xlim())
+   l+=1
+#f.tight_layout()   
+f.savefig(os.path.join(output_address, "AED_scatter.png"),dpi=900)
 
 aed_model_results['reservoir_volume'] *= 1000
 normal_model_results['reservoir_volume'] *= 1000
