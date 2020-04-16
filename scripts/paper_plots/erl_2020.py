@@ -43,20 +43,23 @@ volumes = volumes.set_index('date')
 volumes = volumes.rename(columns={'warms':'WARMS', 'wathnet':'WATHNET'})
 volumes.index.name = 'Date (day)'
 
+plt.rcParams.update({'font.family': 'helvetica','font.size' : 8})
 #Create and run the combined model, comparing against historic data
 normal_model = models.model(addresses)
 normal_model_results = normal_model.run(fast=True)
 volumes['CityWat'] = normal_model_results.loc[volumes.index,['reservoir_volume','service_reservoir_volumes']].sum(axis=1)
-f, axs = plt.subplots(2,1,figsize=(4.6,7))
+f, axs = plt.subplots(figsize=(4,3))
 #fontsize = 6.5
 col = ['r','b','c']
 for (color, (name,data)) in zip(col,volumes.iteritems()):
-    axs[0].plot(data.div(1000),color=color,lw=1)
+    axs.plot(data.div(1000),color=color,lw=1)
     #axs[0].set_ylabel('Supply Reservoir Volume (Gigalitre)')
-    axs[0].set_xlabel('Date (day)')
-    axs[0].legend(volumes.columns)
+    axs.set_xlabel('Date (day)')
+    axs.set_ylabel('Supply reservoir volume (Gl)')
+    axs.legend(volumes.columns)
 nse_vol = 1 - ((volumes['CityWat'] - volumes['WARMS'])**2).mean()/\
                 (volumes['WARMS'].sub(volumes['WARMS'].mean())**2).mean()
+f.savefig(os.path.join(output_address,"historic_reservoir.svg"),dpi=900,bbox_inches ='tight')
 print(nse_vol)
 #Load historic water quality data
 historic_quality_samples_address = os.path.join(repo_address,"data",'thames_downstream_phosphorus.csv')
@@ -64,38 +67,48 @@ quality = pd.read_csv(historic_quality_samples_address,sep=',')
 quality = quality.set_index('date')
 quality.index = pd.to_datetime(quality.index).date
 
+f, axs = plt.subplots(figsize=(4,3))
 #Compare phosphorus
 for color, (idx, qual) in zip(['r','b'],quality.groupby('id')):
-    axs[1].scatter(qual.result,normal_model_results.loc[qual.index,'phosphorus'],s=40,marker='.',color=color)
+    axs.scatter(qual.result,normal_model_results.loc[qual.index,'phosphorus'],s=40,marker='.',color=color)
     ind = normal_model_results.loc[qual.index,'phosphorus'] > 5
     cc = np.corrcoef(qual.result,normal_model_results.loc[qual.index,'phosphorus'])
     print(idx + ' outliers :' + str(cc))
     qual = qual.loc[~ind]
     cc = np.corrcoef(qual.result,normal_model_results.loc[qual.index,'phosphorus'])
     print(idx + ' outliers removed :' + str(cc))
-x = np.linspace(*axs[1].get_xlim())
-axs[1].plot(x, x,ls=':',color='k',lw=1)
-axs[1].legend(['x=y','Sample Site 1','Sample Site 2'])
-axs[1].set_xlabel('Sampled Phosphorus (mg/l)')
-
-f.savefig(os.path.join(output_address,"historic_comparison.png"),dpi=900)
+x = np.linspace(*axs.get_xlim())
+axs.plot(x, x,ls=':',color='k',lw=1)
+axs.legend(['x=y','Sample Site 1','Sample Site 2'])
+axs.set_xlabel('Sampled Phosphorus (mg/l)')
+axs.set_ylabel('CityWat modelled Phosphorus (mg/l)')
+f.savefig(os.path.join(output_address,"historic_phosphorus.svg"),dpi=900,bbox_inches ='tight')
 
 #Plot untreated effluent against precipitation and reservoir volume
 ind = (normal_model_results.precipitation > 10) & (normal_model_results.reservoir_volume > 192807)
 
-f, ax = plt.subplots(2,1,figsize=(4.6,7))
+f, ax = plt.subplots(2,1,figsize=(4,6))
 ax[0].scatter(normal_model_results.precipitation,normal_model_results.untreated_effluent_conc,facecolor='black',s=1.5,marker='.')
-#ax[0].set_xlabel('precipitation')
-#ax[0].set_ylabel('untreated_effluent_conc')
+ax[0].set_xlabel('Precipitation (mm/d)')
+ax[0].set_ylabel('Untreated effluent\n(proportion of river flow)')
+plt.text(0.05, 0.95,'(A)',
+                 horizontalalignment='center',
+                 verticalalignment='center',
+                 transform = ax[0].transAxes)
 
 ax[1].scatter((normal_model_results.reservoir_volume + normal_model_results.service_reservoir_volumes)/1000,normal_model_results.untreated_effluent_conc,facecolor='black',s=1.5,marker='.')
-#ax[1].set_xlabel('volume')
-#ax[1].set_ylabel('untreated_effluent_conc')
+ax[1].set_xlabel('Supply reservoir volume (Gl)')
+ax[1].set_ylabel('Untreated effluent\n(proportion of river flow)')
+plt.text(0.05, 0.95,'(B)',
+                 horizontalalignment='center',
+                 verticalalignment='center',
+                 transform = ax[1].transAxes)
 
-f.savefig(os.path.join(output_address,"precip_vol.png"),dpi=900)
+
+#f.savefig(os.path.join(output_address,"precip_vol.svg"),dpi=900)
 ax[0].scatter(normal_model_results.loc[ind].precipitation,normal_model_results.loc[ind].untreated_effluent_conc,facecolor='red',s=1.5,marker='.')
 ax[1].scatter((normal_model_results.loc[ind].reservoir_volume + normal_model_results.loc[ind].service_reservoir_volumes)/1000,normal_model_results.loc[ind].untreated_effluent_conc,facecolor='red',s=1.5,marker='.')
-f.savefig(os.path.join(output_address,"precip_vol_hilite.png"),dpi=900)
+f.savefig(os.path.join(output_address,"precip_vol_hilite.svg"),dpi=900,bbox_inches = 'tight')
 
 #Get total spill
 subset = normal_model_results.untreated_effluent
@@ -140,12 +153,12 @@ col=['r','b','c']
 f = misc.water_quality_plots([normal_model_results,
                  supply_only_model_results,
                  wastewater_model_results],ind=volumes.index,color=col,lw=[0.3,1,0.3,0.3],ls = ['-','-',':'])
-f.savefig(os.path.join(output_address, "water_quality_framing.png"),dpi=900)
+f.savefig(os.path.join(output_address, "water_quality_framing.svg"),dpi=900,bbox_inches='tight')
 
 
 f, ax = plt.subplots(2,2,figsize=(4.6*2,7))
 l=0
-for var in ['phosphorus','untreated_effluent_conc','reservoir_','restrictions']:
+for var in ['phosphorus','untreated_effluent_conc','reservoir_volume','restrictions']:
    ax[int(l/2),l%2].scatter(normal_model_results[var],supply_only_model_results[var],facecolor='black',s=1.5,marker='.')
    ax[int(l/2),l%2].scatter(normal_model_results[var],wastewater_model_results[var],facecolor='red',s=1.5,marker='.')
    maxo = normal_model_results[var].max()
@@ -153,10 +166,10 @@ for var in ['phosphorus','untreated_effluent_conc','reservoir_','restrictions']:
    l+=1
    
    
-ax[0].scatter(normal_model_results.precipitation,normal_model_results.untreated_effluent_conc,facecolor='black',s=1.5,marker='.')
-
-plt.scatter(normal_model_results.phosphorus,supply_only_model_results.phosphorus,'r')
-plt.scatter(normal_model_results.phosphorus,wastewater_model_results.phosphorus)
+#ax[0].scatter(normal_model_results.precipitation,normal_model_results.untreated_effluent_conc,facecolor='black',s=1.5,marker='.')
+#
+#plt.scatter(normal_model_results.phosphorus,supply_only_model_results.phosphorus,'r')
+#plt.scatter(normal_model_results.phosphorus,wastewater_model_results.phosphorus)
 
 
 #Abstraction effluent dilution
@@ -168,20 +181,34 @@ normal_model_results['reservoir_volume'] = normal_model_results['reservoir_volum
 
 f = misc.aed_plots([normal_model_results,
                  aed_model_results],ind=volumes.index,color=['r','b'],lw=[0.3,0.3,0.3,0.3],ls = ['-','-'], plot_order= [1,1,0,0])
-f.savefig(os.path.join(output_address, "abstraction_effluent_dilution.png"),dpi=900)
+f.savefig(os.path.join(output_address, "abstraction_effluent_dilution.svg"),dpi=900)
 
 f, ax = plt.subplots(2,1,figsize=(4.6,7))
+plt.subplots_adjust(hspace=0.3)
 l=0
+labs= ['(A)','(B)']
+tix = [list(range(0,13,2)),list(range(0,201,50))]
 for var in ['phosphorus','reservoir_volume']:
    ax[l].scatter(normal_model_results[var],aed_model_results[var],facecolor='black',s=1.5,marker='.')
    maxo = normal_model_results[var].max()
    ax[l].plot([0,maxo],[0,maxo],ls='--',color='r')
    ax[l].set_aspect('equal', 'box')
-   ax[l].set_xlabel(var)
+   if l == 0:
+       ax[l].set_xlabel('Phosphorus without\nAED (mg/l)')
+       ax[l].set_ylabel('Phosphorus with\nAED (mg/l)',rotation = 0,ha='right', va='center', ma='right')
+   else:
+       ax[l].set_xlabel('Reservoir volume\nwithout AED (Gl)')
+       ax[l].set_ylabel('Reservoir\nvolume with\nAED (mg/l)',rotation = 0,ha='right', va='center', ma='right')
+   ax[l].set_xticks(tix[l])
+   ax[l].set_yticks(tix[l])
+   plt.text(0.05, 0.95,labs[l],
+                 horizontalalignment='center',
+                 verticalalignment='center',
+                 transform = ax[l].transAxes)
 #   ax[l].set_ylim(ax[l].get_xlim())
    l+=1
-#f.tight_layout()   
-f.savefig(os.path.join(output_address, "AED_scatter.png"),dpi=900)
+
+f.savefig(os.path.join(output_address, "AED_scatter.svg"),dpi=900,bbox_inches = 'tight')
 
 aed_model_results['reservoir_volume'] *= 1000
 normal_model_results['reservoir_volume'] *= 1000
@@ -237,5 +264,5 @@ subset = options_results.loc[['reservoir_volume',
                                 'phosphorus']]
 subset.loc['reservoir_volume'] /= 1000
 f = misc.colorgrid_plot(-subset.copy())
-f.savefig(os.path.join(output_address, "colorgrid_results.png"),dpi=900)
+f.savefig(os.path.join(output_address, "colorgrid_results.svg"),dpi=900)
 

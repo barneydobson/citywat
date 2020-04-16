@@ -13,7 +13,14 @@ def water_quality_plots(data,ind,color=None,lw=None,ls=None):
                 [df.raw_river_conc for df in data]]
     ncols = 2
     nrows = 4
-    figsize = (8.3,6.7)
+    figsize = (8.3,6.5)
+    
+    rename = {'phosphorus' : 'Phosphorus\n(mg/l)',
+              'untreated_effluent_conc' : 'Untreated effluent\n(proportion of\nriver flow)',
+              'treated_effluent_conc' : 'Treated effluent\n(proportion of\nriver flow)',
+              'raw_river_conc' : 'Not effluent\n(proportion of\nriver flow)',
+            }
+    labs = [['(A)','(E)'],['(B)','(F)'],['(C)','(G)'],['(D)','(H)']]
     f, axs = plt.subplots(nrows,ncols,figsize=figsize)
     for i in range(0,len(data)):
         for j in range(0,len(data[i])):
@@ -22,15 +29,33 @@ def water_quality_plots(data,ind,color=None,lw=None,ls=None):
                 ls_ = '-'
             axs[i,0].plot(data[i][j],color=color[j],lw=lw[i],ls=ls_)
             axs[i,1].plot(data[i][j].loc[ind],color=color[j],lw=lw[i])
+            
         j=0
-#        axs[i,0].set_title(data[i][j].name)
+#        axs[i,0].set_yscale('symlog')
+#        axs[i,1].set_yscale('symlog')
         if i%nrows == nrows - 1:
-#            axs[i,0].set_xlabel(data[i][j].index.name)
-#            axs[i,0].set_xlabel(data[i][j].index.name)
-            flag = 0
+            axs[i,0].set_xlabel('Date (day)')
+            axs[i,1].set_xlabel('Date (day)')
         else:
             axs[i,0].set_xticks([])        
             axs[i,1].set_xticks([])        
+        axs[i,0].set_ylabel(rename[data[i][0].name],ha='right', va='center', ma='right',
+           rotation=0)
+        plt.text(0.06, 0.82,labs[i][0],
+                 horizontalalignment='center',
+                 verticalalignment='center',
+                 transform = axs[i,0].transAxes,
+                 bbox=dict(facecolor='white', alpha=0.8,edgecolor='none'))
+        plt.text(0.06, 0.82,labs[i][1],
+                 horizontalalignment='center',
+                 verticalalignment='center',
+                 transform = axs[i,1].transAxes,
+                 bbox=dict(facecolor='white', alpha=0.5,edgecolor='none'))
+    f.align_labels()
+    f.subplots_adjust(bottom=0.3)
+    axs[1,0].legend(loc='upper center', 
+             bbox_to_anchor=(1, -3), frameon=False, ncol=3,
+             labels=['Combined framing','Supply-only framing','Wastewater-only framing'])
     return f
 
 def aed_plots(data,ind,color=None,lw=None,ls=None, plot_order = None):
