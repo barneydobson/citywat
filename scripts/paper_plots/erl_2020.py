@@ -195,10 +195,10 @@ for var in ['phosphorus','reservoir_volume']:
    ax[l].set_aspect('equal', 'box')
    if l == 0:
        ax[l].set_xlabel('Phosphorus without\nAED (mg/l)')
-       ax[l].set_ylabel('Phosphorus with\nAED (mg/l)',rotation = 0,ha='right', va='center', ma='right')
+       ax[l].set_ylabel('Phosphorus with\nAED (mg/l)',rotation = 0,ha='right', va='center', ma='center')
    else:
        ax[l].set_xlabel('Reservoir volume\nwithout AED (Gl)')
-       ax[l].set_ylabel('Reservoir\nvolume with\nAED (mg/l)',rotation = 0,ha='right', va='center', ma='right')
+       ax[l].set_ylabel('Reservoir\nvolume with\nAED (mg/l)',rotation = 0,ha='right', va='center', ma='center')
    ax[l].set_xticks(tix[l])
    ax[l].set_yticks(tix[l])
    plt.text(0.05, 0.95,labs[l],
