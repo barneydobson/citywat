@@ -34,7 +34,10 @@ If you have any questions about using or running the code, or wish to tailor it 
 
 Please cite: Barnaby Dobson and Ana Mijic, CityWat, London, 2020
 
-[![DOI](https://zenodo.org/badge/245396889.svg)](https://zenodo.org/badge/latestdoi/245396889)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3764678.svg)](https://doi.org/10.5281/zenodo.3764678)
+
+## Previous DOIs
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3724180.svg)](https://doi.org/10.5281/zenodo.3724180)
 
 
 ## Getting Started
