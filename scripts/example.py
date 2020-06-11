@@ -15,8 +15,8 @@ import numpy as np
 repo_address = os.path.join("C:\\","Users","bdobson","Documents","GitHub","citywat")
 
 precip_address = os.path.join(repo_address,"data","beckton_rainfall_1900_2018_day_25_km.csv")
-flow_address_teddington = os.path.join(repo_address,"data","teddington-gauge-39001-naturalised.csv")
-flow_address_lee = os.path.join(repo_address,"data","lee-gauge-38001-naturalised.csv")
+flow_address_teddington = os.path.join(repo_address,"data","upstream_thames_naturalised.csv")
+flow_address_lee = os.path.join(repo_address,"data","upstream_lee_naturalised.csv")
 ltoa_address = os.path.join(repo_address,"data","ltoa.csv")
 upstream_phos_address = os.path.join(repo_address,"data","thames_upstream_phosphorus.csv")
 wwtw_phos_address = os.path.join(repo_address,"data","average_wwtw_phosphorus.csv")
