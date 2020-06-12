@@ -55,7 +55,7 @@ The following Python modules are required:
  
 If using Anaconda these can be installed by adding the channel 'conda-forge' (see https://docs.anaconda.com/anaconda/navigator/tutorials/manage-channels/ for adding channels), then adding each module (see https://docs.anaconda.com/anaconda/user-guide/tasks/install-packages/).
 
-CityWat has been tested using Python 2.7.15. ``from __future__ import division`` will need to be added to the top of each script if using Python 2.7.X.
+CityWat has been tested using Python 2.7.15 and 3.8.3. ``from __future__ import division`` will need to be added to the top of each script if using Python 2.7.X.
 
 ### Install
 - Download or clone this repository.
