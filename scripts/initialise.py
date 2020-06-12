@@ -29,7 +29,7 @@ def get_inputs(addresses):
     ind = flowt.index.intersection(flowl.index)
     
     qual = pd.read_csv(addresses['phos_address'],sep=',').set_index('date')['result']
-    qual = qual.rename(columns={'result' : 'upstream_phosphorus'})
+    qual = qual.rename({'result' : 'upstream_phosphorus'})
     qual.index = pd.to_datetime(pd.to_datetime(qual.index).date)
     qual_ = pd.DataFrame(index=ind,columns=['upstream_phosphorus'],dtype='float64')
     qual_.loc[qual.index,'upstream_phosphorus'] = qual
@@ -37,7 +37,7 @@ def get_inputs(addresses):
     qual_ = qual_.fillna(qual_.mean())
     
     wwtw = pd.read_csv(addresses['wwtw_phos_address'],sep=',').set_index('date')['result']
-    wwtw = wwtw.rename(columns={'result' : 'treated_effluent_phosphorus'})
+    wwtw = wwtw.rename({'result' : 'treated_effluent_phosphorus'})
     wwtw.index = pd.to_datetime(pd.to_datetime(wwtw.index).date)
     wwtw_ = pd.DataFrame(index=pd.to_datetime(ind).date,columns=['treated_effluent_phosphorus'],dtype='float64')
     wwtw_.loc[wwtw.index,'treated_effluent_phosphorus'] = wwtw
