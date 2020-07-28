@@ -33,14 +33,24 @@ def water_quality_plots(data,ind,color=None,lw=None,ls=None):
         j=0
 #        axs[i,0].set_yscale('symlog')
 #        axs[i,1].set_yscale('symlog')
+        if i == 0:
+            lim = 12.5
+        else:
+            lim = 1
         if i%nrows == nrows - 1:
             axs[i,0].set_xlabel('Date (day)')
             axs[i,1].set_xlabel('Date (day)')
         else:
             axs[i,0].set_xticks([])        
             axs[i,1].set_xticks([])        
+            
+            
+        axs[i,0].set_ylim([0,lim])
+        axs[i,1].set_ylim([0,lim])
+        
         axs[i,0].set_ylabel(rename[data[i][0].name],ha='right', va='center', ma='right',
            rotation=0)
+    
         plt.text(0.06, 0.82,labs[i][0],
                  horizontalalignment='center',
                  verticalalignment='center',

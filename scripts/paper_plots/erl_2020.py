@@ -9,13 +9,13 @@ import os
 import pandas as pd
 from matplotlib import pyplot as plt
 import sys
-sys.path.append(os.path.join("C:\\","Users","bdobson","Documents","GitHub","citywat","scripts"))
+sys.path.append(os.path.join("C:\\","Users","Barney","Documents","GitHub","citywat","scripts"))
 import models
 import misc
 import numpy as np
 
 #Data addresses
-repo_address = os.path.join("C:\\","Users","bdobson","Documents","GitHub","citywat")
+repo_address = os.path.join("C:\\","Users","Barney","Documents","GitHub","citywat")
 
 precip_address = os.path.join(repo_address,"data","beckton_rainfall_1900_2018_day_25_km.csv")
 flow_address_teddington = os.path.join(repo_address,"data","upstream_thames_naturalised.csv")
@@ -57,6 +57,7 @@ for (color, (name,data)) in zip(col,volumes.iteritems()):
     axs.set_xlabel('Date (day)')
     axs.set_ylabel('Supply reservoir volume (Gl)')
     axs.legend(volumes.columns)
+    axs.set_ylim([0,210])
 nse_vol = 1 - ((volumes['CityWat'] - volumes['WARMS'])**2).mean()/\
                 (volumes['WARMS'].sub(volumes['WARMS'].mean())**2).mean()
 f.savefig(os.path.join(output_address,"historic_reservoir.svg"),dpi=900,bbox_inches ='tight')
@@ -161,6 +162,7 @@ l=0
 for var in ['phosphorus','untreated_effluent_conc','reservoir_volume','restrictions']:
    ax[int(l/2),l%2].scatter(normal_model_results[var],supply_only_model_results[var],facecolor='black',s=1.5,marker='.')
    ax[int(l/2),l%2].scatter(normal_model_results[var],wastewater_model_results[var],facecolor='red',s=1.5,marker='.')
+   
    maxo = normal_model_results[var].max()
    ax[int(l/2),l%2].plot([0,maxo],[0,maxo],ls=':')
    l+=1
