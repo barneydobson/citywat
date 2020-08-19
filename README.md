@@ -32,11 +32,11 @@ We decided it was far easier to make a simple but highly customisable software.
 ## Citation
 If you have any questions about using or running the code, or wish to tailor it to a new case study, please contact b.dobson[-at-]imperial.ac.uk.
 
-Please cite: Barnaby Dobson and Ana Mijic, CityWat, London, 2020
-
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3764678.svg)](https://doi.org/10.5281/zenodo.3764678)
+Please cite: \
+Dobson and Mijic, 2020, Environ. Res. Lett. https://doi.org/10.1088/1748-9326/abb050
 
 ## Previous DOIs
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3764678.svg)](https://doi.org/10.5281/zenodo.3764678)\
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3724180.svg)](https://doi.org/10.5281/zenodo.3724180)
 
 
