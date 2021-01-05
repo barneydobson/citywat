@@ -331,7 +331,7 @@ def freshwater_treatment(state_variables, parameters):
 
 def distribution(state_variables, parameters):    
     #Take any extra needed water from service reservoirs
-    target_from_service_reservoirs = state_variables['distribution_demand'] - state_variables['treatment_output_to_distribution']
+    target_from_service_reservoirs = max(state_variables['distribution_demand'] - state_variables['treatment_output_to_distribution'], 0)
     target_from_service_reservoirs = min(target_from_service_reservoirs,state_variables['service_reservoir_volumes'])
     state_variables['service_reservoir_volumes'] -= target_from_service_reservoirs
     
